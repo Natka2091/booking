@@ -61,7 +61,7 @@ function getRandomCheckinCheckout() {
     };
 }
 
-const offers = new Array(10).fill(null).map((el,index)=>{
+const offers = new Array(10).fill(null).map((el,index)=> {
     const time = getRandomCheckinCheckout();
     return {
         author: {
