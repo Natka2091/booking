@@ -1,42 +1,25 @@
 import {
-  getRandomNumber,
-  getRandomInt,
-  getRandomElementFromArray
+    getRandomInt,
+    getRandomElementFromArray
 } from './util.js';
 
-const types = ['palace','flat','house','bungalow'];
-const titles = ['Nice Apartment','Central Location','Comfortable Living','Quiet Area', 'Modern Interior', 'Great View','Convenient Stay','Elegant Design','Bright Rooms','Perfect Choice'];
-const minX = 35.65000;
-const maxX = 35.70000;
-const minY = 139.70000;
-const maxY = 139.80000;
-const checkinCheckout = ['12:00', '13:00', '14:00','15:00','16:00'];
-const features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const descriptions = [
-  'Cozy apartment in a quiet neighborhood.',
-  'Modern home with all necessary amenities.',
-  'Perfect place for a comfortable stay.',
-  'Bright and spacious accommodation.',
-  'Stylish interior and convenient location.',
-  'Ideal choice for business or leisure.',
-  'Peaceful place near the city center.',
-  'Comfortable rooms with modern design.',
-  'Well-equipped property for guests.',
-  'Charming place with a great atmosphere.'
-];
-const photos = [
-  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-];
+import {
+    types,
+    titles,
+    coord,
+    checkinCheckout,
+    features,
+    descriptions,
+    photos
+} from './constants.js';
 
 function getAvatarUrl(number){
     return `img/avatars/user0${number}.png`
 }
 
 function getRandomCoordinates(){
-    const x = Math.random() * (maxX - minX + 1) + minX;
-    const y = Math.random() * (maxY - minY + 1) + minY;
+    const x = Math.random() * (coord.maxX - coord.minX + 1) + coord.minX;
+    const y = Math.random() * (coord.maxY - coord.minY + 1) + coord.minY;
     return {
         x: Number(x.toFixed(5)),
         y: Number(y.toFixed(5))
@@ -60,16 +43,16 @@ function getRandomCheckinCheckout() {
         checkout
     };
 }
-
 const offers = new Array(10).fill(null).map((el,index)=> {
     const time = getRandomCheckinCheckout();
+    const coordinates = getRandomCoordinates();
     return {
         author: {
         avatar: getAvatarUrl(index+1)
         },
         offer: {
             title: getRandomElementFromArray(titles),
-            address: getRandomCoordinates(),
+            address: `${coordinates.x}, ${coordinates.y}`,
             price: getRandomInt(800, 20000),
             type: getRandomElementFromArray(types),
             rooms: getRandomInt(1, 4),
@@ -80,8 +63,8 @@ const offers = new Array(10).fill(null).map((el,index)=> {
             description: getRandomElementFromArray(descriptions),
             photos: getRandomUniqueItems(photos),
         },
+        location: coordinates
     }
     
 })
-
-export {offers};
+export { offers };
