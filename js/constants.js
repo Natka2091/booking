@@ -26,6 +26,13 @@ const photos = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+const housTypes = {
+    flat: 'Квартира',
+    bungalow: 'Бунгало',
+    house: 'Будинок',
+    palace: 'Палац'
+};
+
 export {
   types,
   titles,
@@ -33,5 +40,6 @@ export {
   checkinCheckout,
   features,
   descriptions,
-  photos
+  photos,
+  housTypes
 };
