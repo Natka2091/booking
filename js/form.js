@@ -12,7 +12,7 @@ const minPriceForType = {
 
 function updatePrice() {
     const minPrice = minPriceForType[typeField.value];
-
+    priceField.value = "";
     priceField.min = minPrice;
     priceField.placeholder = minPrice;
 }

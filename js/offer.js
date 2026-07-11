@@ -74,6 +74,6 @@ offers.forEach((offerData)=>{
    createCard(offerData)
 })
 }
-
+export{createCard};
 
 

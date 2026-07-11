@@ -13,13 +13,14 @@ import {
     photos
 } from './constants.js';
 
-function getAvatarUrl(number){
+function getAvatarUrl(){
+    const number = getRandomInt(1, 8);
     return `img/avatars/user0${number}.png`
 }
 
 function getRandomCoordinates(){
-    const x = Math.random() * (coord.maxX - coord.minX + 1) + coord.minX;
-    const y = Math.random() * (coord.maxY - coord.minY + 1) + coord.minY;
+    const x = Math.random() * (coord.maxX - coord.minX) + coord.minX;
+    const y = Math.random() * (coord.maxY - coord.minY) + coord.minY;
     return {
         x: Number(x.toFixed(5)),
         y: Number(y.toFixed(5))
@@ -43,12 +44,12 @@ function getRandomCheckinCheckout() {
         checkout
     };
 }
-const offers = new Array(10).fill(null).map((el,index)=> {
+const offers = new Array(10).fill(null).map(()=> {
     const time = getRandomCheckinCheckout();
     const coordinates = getRandomCoordinates();
     return {
         author: {
-        avatar: getAvatarUrl(index+1)
+        avatar: getAvatarUrl()
         },
         offer: {
             title: getRandomElementFromArray(titles),
