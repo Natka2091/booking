@@ -1,8 +1,11 @@
 import { offers } from './data.js';
 import { createCard } from './offer.js';
-import { enableForm } from './page-state.js';
+import { changeFormState } from './form-state.js';
 const tokyoCenter = [35.68950, 139.69170];
 const map = L.map('map-canvas').setView(tokyoCenter, 13);
+map.on('load', () => {
+    changeFormState('active');
+});
 const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
     iconSize: [52, 52],
@@ -23,9 +26,9 @@ addressField.readOnly = true;
 
 addressField.value = `${tokyoCenter[0].toFixed(5)}, ${tokyoCenter[1].toFixed(5)}`;
 
-mainPinMarker.on('moveend', (event) => {
+mainPinMarker.on('move', (event) => {
     const coordinates = event.target.getLatLng();
-
+    console.log(coordinates);
     addressField.value = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`
 })
 offers.forEach((offerData) => {
@@ -36,12 +39,13 @@ offers.forEach((offerData) => {
             icon: pinIcon
         }
     );
-    marker
+  marker
         .addTo(map)
-        .bindPopup(createCard(offerData));
+         /* .bindPopup(createCard(offerData));*/
 });
+mainPinMarker.addTo(map);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-mainPinMarker.addTo(map);
+
