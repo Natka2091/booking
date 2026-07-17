@@ -1,6 +1,6 @@
 import { offers } from './data.js';
 import { createCard } from './offer.js';
-import { changeFormState } from './form-state.js';
+import { changeFormState } from './form.js';
 const tokyoCenter = [35.68950, 139.69170];
 const map = L.map('map-canvas').setView(tokyoCenter, 13);
 map.on('load', () => {
@@ -32,16 +32,27 @@ mainPinMarker.on('move', (event) => {
     addressField.value = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`
 })
 offers.forEach((offerData) => {
-    const marker = L.marker([
+    const marker = L.marker(
+        [
             offerData.location.x,
             offerData.location.y
-        ], {
+        ],
+        {
             icon: pinIcon
         }
     );
-  marker
-        .addTo(map)
-         /* .bindPopup(createCard(offerData));*/
+
+    marker.addTo(map);
+
+    marker.on('click', () => {
+        L.popup()
+            .setLatLng([
+                offerData.location.x,
+                offerData.location.y
+            ])
+            .setContent(createCard(offerData))
+            .openOn(map);
+    });
 });
 mainPinMarker.addTo(map);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

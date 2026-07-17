@@ -2,6 +2,7 @@ const typeField = document.querySelector('#type');
 const priceField = document.querySelector('#price');
 const checkinField = document.querySelector('#timein');
 const checkoutField = document.querySelector('#timeout');
+const adForm = document.querySelector('.ad-form');
 
 const minPriceForType = {
     bungalow: 0,
@@ -25,6 +26,24 @@ function syncCheckoutTime() {
     checkinField.value = checkoutField.value;
 }
 
+function changeFormState(status) {
+    const fieldsets = adForm.querySelectorAll('fieldset');
+
+    if (status === 'active') {
+        adForm.classList.remove('ad-form--disabled');
+
+        fieldsets.forEach((fieldset) => {
+            fieldset.disabled = false;
+        });
+    } else {
+        adForm.classList.add('ad-form--disabled');
+
+        fieldsets.forEach((fieldset) => {
+            fieldset.disabled = true;
+        });
+    }
+}
+
 typeField.addEventListener('change', updatePrice);
 
 checkinField.addEventListener('change', syncCheckinTime);
@@ -33,3 +52,7 @@ checkoutField.addEventListener('change', syncCheckoutTime);
 
 
 updatePrice();
+
+changeFormState('disabled');
+changeFormState('active');
+export { changeFormState };
