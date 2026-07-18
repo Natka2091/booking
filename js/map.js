@@ -2,10 +2,12 @@ import { offers } from './data.js';
 import { createCard } from './offer.js';
 import { changeFormState } from './form.js';
 const tokyoCenter = [35.68950, 139.69170];
-const map = L.map('map-canvas').setView(tokyoCenter, 13);
+const map = L.map('map-canvas');
 map.on('load', () => {
+    console.log('Map loaded');
     changeFormState('active');
 });
+map.setView(tokyoCenter, 13);
 const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
     iconSize: [52, 52],
