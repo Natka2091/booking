@@ -13,6 +13,13 @@ const minPriceForType = {
     palace: 10000
 };
 
+const capacityByRooms = {
+    '1': ['1'],
+    '2': ['1', '2'],
+    '3': ['1', '2', '3'],
+    '100': ['0']
+};
+
 function updatePrice() {
     const minPrice = minPriceForType[typeField.value];
 
@@ -51,37 +58,12 @@ function validateCapacity() {
     const rooms = roomField.value;
     const guests = capacityField.value;
 
-    capacityField.setCustomValidity('');
-
-    switch (rooms) {
-        case '1':
-            if (guests !== '1') {
-                capacityField.setCustomValidity(
-                    'Для 1 кімнати доступний лише 1 гість.'
-                );
-            }
-            break;
-        case '2':
-            if (guests !== '1' && guests !== '2') {
-                capacityField.setCustomValidity(
-                    'Для 2 кімнат доступно 1 або 2 гостя.'
-                );
-            }
-            break;
-        case '3':
-            if (guests !== '1' && guests !== '2' && guests !== '3') {
-                capacityField.setCustomValidity(
-                    'Для 3 кімнат доступно від 1 до 3 гостей.'
-                );
-            }
-            break;
-        case '100':
-            if (guests !== '0') {
-                capacityField.setCustomValidity(
-                    '100 кімнат не призначені для гостей.'
-                );
-            }
-            break;
+   if (capacityByRooms[rooms].includes(guests)) {
+        capacityField.setCustomValidity('');
+    } else {
+        capacityField.setCustomValidity(
+            'Кількість гостей не відповідає кількості кімнат.'
+        );
     }
 }
 
