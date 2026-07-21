@@ -24,39 +24,64 @@ const mainPinMarker = L.marker(tokyoCenter,{
     }
 );
 const addressField = document.querySelector('#address');
+const markerGroup = L.layerGroup().addTo(map);
+const mapFilters = document.querySelector('.map__filters');
+const housingType = mapFilters.querySelector('#housing-type');
+
 addressField.readOnly = true;
-
 addressField.value = `${tokyoCenter[0].toFixed(5)}, ${tokyoCenter[1].toFixed(5)}`;
-
 mainPinMarker.on('move', (event) => {
     const coordinates = event.target.getLatLng();
     console.log(coordinates);
     addressField.value = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`
 })
-offers.forEach((offerData) => {
-    const marker = L.marker(
-        [
-            offerData.location.x,
-            offerData.location.y
-        ],
-        {
-            icon: pinIcon
-        }
-    );
 
-    marker.addTo(map);
-
-    marker.on('click', () => {
-        L.popup()
-            .setLatLng([
+function showMarkers(offers) {
+    offers.forEach((offerData) => {
+        const marker = L.marker(
+            [
                 offerData.location.x,
                 offerData.location.y
-            ])
-            .setContent(createCard(offerData))
-            .openOn(map);
+            ],
+            {
+                icon: pinIcon
+            }
+        );
+
+        marker.addTo(markerGroup);
+
+        marker.on('click', () => {
+            L.popup()
+                .setLatLng([
+                    offerData.location.x,
+                    offerData.location.y
+                ])
+                .setContent(createCard(offerData))
+                .openOn(map);
+        });
     });
+}
+
+function clearMarkers() {
+    markerGroup.clearLayers();
+}
+
+function filterOffers(offersList) {
+    const selectedType = housingType.value;
+
+    if (selectedType === 'any') {
+        return offers;
+    }
+
+    return offersList.filter((item) => item.offer.type === selectedType);
+}
+
+mapFilters.addEventListener('change', () => {
+    clearMarkers();
+    showMarkers(filterOffers(offers));
 });
 mainPinMarker.addTo(map);
+showMarkers(filterOffers(offers));
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
